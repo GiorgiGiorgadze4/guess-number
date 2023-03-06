@@ -3,7 +3,15 @@
 let randnum = Math.trunc(Math.random() * 20) + 1;
 
 let score = 20;
-let highscore = 0;
+let highscore = localStorage.getItem('highscore');
+
+function init() {
+  document.querySelector('.highscore').textContent = highscore;
+  document.querySelector('.score').textContent = score;
+}
+
+init();
+
 document.querySelector('.check').addEventListener('click', function () {
   const input = Number(document.querySelector('.guess').value);
 
@@ -19,10 +27,12 @@ document.querySelector('.check').addEventListener('click', function () {
   } else if (input === randnum) {
     score++;
     document.querySelector('.message').textContent =
-      'we have a winner!!!' + '\n' + 'what a total chad'; //BUG:\n how to wrie on new line
+      'we have a winner!!!' + '\r\n' + 'what a total chad';
 
-    if (Number(document.querySelector('.highscore').textContent) < score) {
-      document.querySelector('.highscore').textContent = score;
+    if (highscore < score) {
+      highscore = score;
+      document.querySelector('.highscore').textContent = highscore;
+      localStorage.setItem('highscore', highscore);
     }
 
     document.querySelector('body').style.backgroundColor = '#60b347';
@@ -36,17 +46,23 @@ document.querySelector('.check').addEventListener('click', function () {
   }
   document.querySelector('.score').textContent = score;
 });
-document.querySelector('.again').addEventListener('click', function () {
-  score = 0;
+document.querySelector('.reset').addEventListener('click', function () {
+  localStorage.setItem('highscore', 0);
+  document.querySelector('.highscore').textContent = 0;
+  console.log(highscore);
 });
 document.querySelector('.again').addEventListener('click', function () {
-  score = 20;
-  let randnum = Math.trunc(Math.random() * 20) + 1;
+  location.reload();
+});
 
-  document.querySelector('.message').textContent = 'Start guessing...';
-  document.querySelector('.score').textContent = score;
-  document.querySelector('.number').textContent = '?';
-  document.querySelector('.guess').value = '';
-  document.querySelector('body').style.backgroundColor = '#222';
-  document.querySelector('.number').style.width = '15rem';
-});
+// document.querySelector('.again').addEventListener('click', function () {
+//   score = 20;
+//   let randnum = Math.trunc(Math.random() * 20) + 1;
+
+//   document.querySelector('.message').textContent = 'Start guessing...';
+//   document.querySelector('.score').textContent = score;
+//   document.querySelector('.number').textContent = '?';
+//   document.querySelector('.guess').value = '';
+//   document.querySelector('body').style.backgroundColor = '#222';
+//   document.querySelector('.number').style.width = '15rem';
+// });
